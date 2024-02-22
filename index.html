@@ -1,1 +1,76 @@
-<h1>oogabooga</h1>
+<!DOCTYPE html>
+<html>
+
+<body>
+
+  <h2>Post a message:</h2>
+
+  <form id="message-form">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br>
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+    <input type="submit" value="Send">
+  </form>
+
+  <div id="messages-container"></div>
+
+  <script>
+    document.getElementById('message-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var name = document.getElementById('name').value;
+      var message = document.getElementById('message').value;
+      var messagesContainer = document.getElementById('messages-container');
+      var messageElement = document.createElement('p');
+      messageElement.textContent = name + ': ' + message;
+      messagesContainer.appendChild(messageElement);
+      document.getElementById('message').value = '';
+    });
+  </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+body {
+  font-family: Arial, comic-sans;
+}
+
+#video-container {
+  float: left;
+  margin-right: 20px;
+}
+
+#message-container {
+  width: 50%;
+  float: left;
+}
+
+#message-form {
+  margin-bottom: 10px;
+}
+
+#messages-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  height: 300px;
+  overflow-y: scroll;
+}
+
+
+
+
+document.getElementById('message-form').addEventListener('submit', function(event) {
+	event.preventDefault();
+	var message = document.getElementById('message-input').value;
+	var messagesContainer = document.getElementById('messages-container');
+	var messageElement = document.createElement('p');
+	messageElement.textContent = message;
+	messagesContainer.appendChild(messageElement);
+	document.getElementById('message-input').value = '';
+});
