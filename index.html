@@ -1,33 +1,49 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Messaging System</title>
+    <style>
+        #messages {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
 <body>
+    <div id="messages"></div>
+    <input type="text" id="message-input" placeholder="Type your message...">
+    <button id="send-button">Send</button>
 
-  <h2>Post a message:</h2>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+        // Replace with your own Pusher credentials
+        const pusher = new Pusher('Plwz0HFBoXL-B9MtVYm5_34Tov7U3qkduLhYRATmcZg', {
+            cluster: 'Plwz0HFBoXL-B9MtVYm5_34Tov7U3qkduLhYRATmcZg',
+            encrypted: true
+        });
 
-  <form id="message-form">
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" required><br>
-    <label for="message">Message:</label><br>
-    <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
-    <input type="submit" value="Send">
-  </form>
+        const channel = pusher.subscribe('messaging-channel');
 
-  <div id="messages-container"></div>
+        channel.bind('new-message', (data) => {
+            const messagesDiv = document.getElementById('messages');
+            const messageElement = document.createElement('p');
+            messageElement.textContent = `${data.user}: ${data.message}`;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
 
-  <script>
-    document.getElementById('message-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      var name = document.getElementById('name').value;
-      var message = document.getElementById('message').value;
-      var messagesContainer = document.getElementById('messages-container');
-      var messageElement = document.createElement('p');
-      messageElement.textContent = name + ': ' + message;
-      messagesContainer.appendChild(messageElement);
-      document.getElementById('message').value = '';
-    });
-  </script>
-
+        document.getElementById('send-button').addEventListener('click', () => {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+            if (message.trim()) {
+                channel.trigger('new-message', { user: 'You', message });
+                messageInput.value = '';
+            }
+        });
+    </script>
 </body>
-
 </html>
