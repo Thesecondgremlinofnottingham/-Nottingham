@@ -1,0 +1,9 @@
+document.getElementById('message-form').addEventListener('submit', function(event) {
+	event.preventDefault();
+	var message = document.getElementById('message-input').value;
+	var messagesContainer = document.getElementById('messages-container');
+	var messageElement = document.createElement('p');
+	messageElement.textContent = message;
+	messagesContainer.appendChild(messageElement);
+	document.getElementById('message-input').value = '';
+});
